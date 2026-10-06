@@ -15,6 +15,7 @@ from typing import Any
 import httpx
 
 from app.config import get_settings
+from app.utils.http import http_client
 
 log = logging.getLogger(__name__)
 
@@ -71,7 +72,7 @@ class AIClient:
         if json_mode and self.provider != "anthropic":
             payload["response_format"] = {"type": "json_object"}
         try:
-            with httpx.Client(timeout=self.timeout) as client:
+            with http_client(timeout=self.timeout) as client:
                 resp = client.post(f"{self.base_url}/chat/completions",
                                    headers=headers, json=payload)
                 resp.raise_for_status()

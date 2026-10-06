@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { api, type Trip, type Pricing } from "@/lib/client-api";
 import { Card, Badge, Spinner, ErrorState, PageHeader, fmtMoney } from "@/components/ui";
-import { PricingRows } from "../page";
+import { PricingRows } from "@/components/PricingRows";
 
 const CATEGORY_META: [string, keyof Pick<Pricing, "transportation" | "accommodation" | "activities" | "other">, string, string][] = [
   ["Transportation", "transportation", "✈️", "bg-brand-600"],

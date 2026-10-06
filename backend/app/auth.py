@@ -18,6 +18,7 @@ from sqlalchemy.orm import Session
 from app.config import get_settings
 from app.database import get_db
 from app.models import Profile, Role
+from app.utils.http import http_client
 
 _bearer = HTTPBearer(auto_error=False)
 _jwks_cache: dict | None = None
@@ -41,7 +42,8 @@ def _jwks() -> dict:
         return _jwks_cache
     url = settings.supabase_url.rstrip("/") + "/auth/v1/.well-known/jwks.json"
     try:
-        resp = httpx.get(url, timeout=10)
+        with http_client(timeout=10) as client:
+            resp = client.get(url)
         resp.raise_for_status()
         _jwks_cache = resp.json()
         _jwks_fetched_at = time.time()
