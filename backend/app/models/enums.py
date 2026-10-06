@@ -1,0 +1,98 @@
+"""Shared enums. Mirror the PostgreSQL enum types in supabase/migrations."""
+import enum
+
+
+class Role(str, enum.Enum):
+    TRAVELER = "TRAVELER"
+    OPERATOR = "OPERATOR"
+    COORDINATOR = "COORDINATOR"
+    VENDOR = "VENDOR"
+    ADMIN = "ADMIN"
+
+
+class TripStatus(str, enum.Enum):
+    DRAFT = "DRAFT"
+    PLANNING = "PLANNING"
+    READY = "READY"
+    BOOKED = "BOOKED"
+    IN_PROGRESS = "IN_PROGRESS"
+    DISRUPTED = "DISRUPTED"
+    COMPLETED = "COMPLETED"
+    CANCELLED = "CANCELLED"
+
+
+class ItemType(str, enum.Enum):
+    FLIGHT = "FLIGHT"
+    TRAIN = "TRAIN"
+    BUS = "BUS"
+    TRANSFER = "TRANSFER"
+    HOTEL = "HOTEL"
+    ACTIVITY = "ACTIVITY"
+    EVENT = "EVENT"
+    RESTAURANT = "RESTAURANT"
+    OTHER = "OTHER"
+
+
+class ItemStatus(str, enum.Enum):
+    PLANNED = "PLANNED"
+    CONFIRMED = "CONFIRMED"
+    AT_RISK = "AT_RISK"
+    BROKEN = "BROKEN"
+    CANCELLED = "CANCELLED"
+    COMPLETED = "COMPLETED"
+    REBOOKED = "REBOOKED"
+
+
+class BookingStatus(str, enum.Enum):
+    PLANNED = "PLANNED"
+    PENDING = "PENDING"
+    CONFIRMED = "CONFIRMED"
+    CANCELLED = "CANCELLED"
+    REBOOKED = "REBOOKED"
+    COMPLETED = "COMPLETED"
+
+
+class DisruptionType(str, enum.Enum):
+    FLIGHT_DELAY = "FLIGHT_DELAY"
+    FLIGHT_CANCELLATION = "FLIGHT_CANCELLATION"
+    TRAIN_DELAY = "TRAIN_DELAY"
+    HOTEL_UNAVAILABLE = "HOTEL_UNAVAILABLE"
+    ACTIVITY_CANCELLED = "ACTIVITY_CANCELLED"
+    TRANSFER_UNAVAILABLE = "TRANSFER_UNAVAILABLE"
+
+
+class DisruptionStatus(str, enum.Enum):
+    OPEN = "OPEN"
+    ANALYZED = "ANALYZED"
+    RECOVERY_PROPOSED = "RECOVERY_PROPOSED"
+    RESOLVED = "RESOLVED"
+    CLOSED = "CLOSED"
+
+
+class ImpactState(str, enum.Enum):
+    UNAFFECTED = "UNAFFECTED"
+    FLAGGED = "FLAGGED"
+    AT_RISK = "AT_RISK"
+    BROKEN = "BROKEN"
+
+
+class RecoveryAction(str, enum.Enum):
+    RESCHEDULE_ITEM = "RESCHEDULE_ITEM"
+    CHANGE_TRANSFER = "CHANGE_TRANSFER"
+    MOVE_RESTAURANT = "MOVE_RESTAURANT"
+    REPLACE_ACTIVITY = "REPLACE_ACTIVITY"
+    CANCEL_OPTIONAL_ACTIVITY = "CANCEL_OPTIONAL_ACTIVITY"
+    REPLACE_TRANSPORT = "REPLACE_TRANSPORT"
+    MODIFY_TIMING = "MODIFY_TIMING"
+
+
+class DependencyType(str, enum.Enum):
+    SEQUENTIAL = "SEQUENTIAL"
+    SPATIAL = "SPATIAL"
+
+
+class PaymentStatus(str, enum.Enum):
+    PENDING = "PENDING"
+    PAID = "PAID"
+    FAILED = "FAILED"
+    REFUNDED = "REFUNDED"

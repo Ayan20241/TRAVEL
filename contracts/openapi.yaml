@@ -1,0 +1,3525 @@
+openapi: 3.1.0
+info:
+  title: TourFlow AI
+  description: 'TourFlow AI API contract — generated from the FastAPI implementation
+    (source of truth: backend/app). Regenerate: python -c "from app.main import app;
+    ..."'
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      tags:
+      - system
+      summary: Health
+      operationId: health_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/v1/health:
+    get:
+      tags:
+      - system
+      summary: Health V1
+      operationId: health_v1_api_v1_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/v1/trips:
+    post:
+      tags:
+      - trips
+      summary: Create Trip
+      operationId: create_trip_api_v1_trips_post
+      security:
+      - HTTPBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - trips
+      summary: List Trips
+      operationId: list_trips_api_v1_trips_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/TripStatus'
+          - type: 'null'
+          title: Status
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+          title: Page Size
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TripOut'
+                title: Response List Trips Api V1 Trips Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/trips/{trip_id}:
+    get:
+      tags:
+      - trips
+      summary: Get Trip
+      operationId: get_trip_api_v1_trips__trip_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - trips
+      summary: Update Trip
+      operationId: update_trip_api_v1_trips__trip_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - trips
+      summary: Delete Trip
+      operationId: delete_trip_api_v1_trips__trip_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/trips/{trip_id}/preferences:
+    put:
+      tags:
+      - trips
+      summary: Upsert Preferences
+      operationId: upsert_preferences_api_v1_trips__trip_id__preferences_put
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripPreferenceIn'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripPreferenceOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - trips
+      summary: Get Preferences
+      operationId: get_preferences_api_v1_trips__trip_id__preferences_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/TripPreferenceOut'
+                - type: 'null'
+                title: Response Get Preferences Api V1 Trips  Trip Id  Preferences
+                  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/trips/{trip_id}/itinerary:
+    get:
+      tags:
+      - itinerary
+      summary: List Items
+      operationId: list_items_api_v1_trips__trip_id__itinerary_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItineraryItemOut'
+                title: Response List Items Api V1 Trips  Trip Id  Itinerary Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - itinerary
+      summary: Create Item
+      operationId: create_item_api_v1_trips__trip_id__itinerary_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItineraryItemCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItineraryItemOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/itinerary/{item_id}:
+    patch:
+      tags:
+      - itinerary
+      summary: Update Item
+      operationId: update_item_api_v1_itinerary__item_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Item Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItineraryItemUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItineraryItemOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - itinerary
+      summary: Delete Item
+      operationId: delete_item_api_v1_itinerary__item_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: item_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Item Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/trips/{trip_id}/dependencies:
+    get:
+      tags:
+      - itinerary
+      summary: List Dependencies
+      operationId: list_dependencies_api_v1_trips__trip_id__dependencies_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DependencyOut'
+                title: Response List Dependencies Api V1 Trips  Trip Id  Dependencies
+                  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - itinerary
+      summary: Create Dependency
+      operationId: create_dependency_api_v1_trips__trip_id__dependencies_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DependencyCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DependencyOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dependencies/{dep_id}:
+    delete:
+      tags:
+      - itinerary
+      summary: Delete Dependency
+      operationId: delete_dependency_api_v1_dependencies__dep_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: dep_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dep Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/trips/{trip_id}/disruptions:
+    post:
+      tags:
+      - disruptions
+      summary: Create Disruption
+      operationId: create_disruption_api_v1_trips__trip_id__disruptions_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisruptionCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisruptionOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - disruptions
+      summary: List Disruptions
+      operationId: list_disruptions_api_v1_trips__trip_id__disruptions_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DisruptionOut'
+                title: Response List Disruptions Api V1 Trips  Trip Id  Disruptions
+                  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/disruptions/{disruption_id}/impact:
+    post:
+      tags:
+      - disruptions
+      summary: Run Impact
+      operationId: run_impact_api_v1_disruptions__disruption_id__impact_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: disruption_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Disruption Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImpactOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/disruptions/{disruption_id}/recovery-options:
+    post:
+      tags:
+      - disruptions
+      summary: Create Recovery Options
+      operationId: create_recovery_options_api_v1_disruptions__disruption_id__recovery_options_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: disruption_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Disruption Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecoveryOptionOut'
+                title: Response Create Recovery Options Api V1 Disruptions  Disruption
+                  Id  Recovery Options Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - disruptions
+      summary: List Recovery Options
+      operationId: list_recovery_options_api_v1_disruptions__disruption_id__recovery_options_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: disruption_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Disruption Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecoveryOptionOut'
+                title: Response List Recovery Options Api V1 Disruptions  Disruption
+                  Id  Recovery Options Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/recovery-options/{option_id}/select:
+    post:
+      tags:
+      - disruptions
+      summary: Select Option
+      operationId: select_option_api_v1_recovery_options__option_id__select_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: option_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Option Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryOptionOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/trips/{trip_id}/bookings:
+    post:
+      tags:
+      - bookings
+      summary: Create Booking
+      operationId: create_booking_api_v1_trips__trip_id__bookings_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - bookings
+      summary: List Bookings
+      operationId: list_bookings_api_v1_trips__trip_id__bookings_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookingOut'
+                title: Response List Bookings Api V1 Trips  Trip Id  Bookings Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/bookings/{booking_id}:
+    patch:
+      tags:
+      - bookings
+      summary: Update Booking
+      operationId: update_booking_api_v1_bookings__booking_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: booking_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Booking Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/bookings:
+    get:
+      tags:
+      - bookings
+      summary: All Bookings
+      operationId: all_bookings_api_v1_bookings_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/BookingOut'
+                type: array
+                title: Response All Bookings Api V1 Bookings Get
+      security:
+      - HTTPBearer: []
+  /api/v1/trips/{trip_id}/pricing:
+    get:
+      tags:
+      - bookings
+      summary: Get Pricing
+      description: Backend-authoritative cost estimate. Frontend totals are never
+        trusted.
+      operationId: get_pricing_api_v1_trips__trip_id__pricing_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/trips/{trip_id}/recommendations:
+    get:
+      tags:
+      - ai
+      summary: Recommendations
+      operationId: recommendations_api_v1_trips__trip_id__recommendations_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecommendationOut'
+                title: Response Recommendations Api V1 Trips  Trip Id  Recommendations
+                  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/trips/{trip_id}/itinerary-suggestion:
+    get:
+      tags:
+      - ai
+      summary: Itinerary Suggestion
+      description: AI day-by-day skeleton. Caller must validate before persisting
+        as items.
+      operationId: itinerary_suggestion_api_v1_trips__trip_id__itinerary_suggestion_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/trips/{trip_id}/ask:
+    post:
+      tags:
+      - ai
+      summary: Ask Question
+      operationId: ask_question_api_v1_trips__trip_id__ask_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripQuestionIn'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/vendors:
+    get:
+      tags:
+      - catalog
+      summary: List Vendors
+      operationId: list_vendors_api_v1_vendors_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Page Size
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VendorOut'
+                title: Response List Vendors Api V1 Vendors Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - catalog
+      summary: Create Vendor
+      operationId: create_vendor_api_v1_vendors_post
+      security:
+      - HTTPBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VendorIn'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/vendors/{vendor_id}:
+    patch:
+      tags:
+      - catalog
+      summary: Update Vendor
+      operationId: update_vendor_api_v1_vendors__vendor_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: vendor_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Vendor Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VendorIn'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/destinations:
+    get:
+      tags:
+      - catalog
+      summary: List Destinations
+      operationId: list_destinations_api_v1_destinations_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: q
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Q
+      - name: tag
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tag
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Page Size
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DestinationOut'
+                title: Response List Destinations Api V1 Destinations Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/hotels:
+    get:
+      tags:
+      - hotels
+      summary: ' List'
+      operationId: _list_api_v1_hotels_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: city
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: City
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Page Size
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HotelOut'
+                title: Response  List Api V1 Hotels Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - hotels
+      summary: ' Create'
+      operationId: _create_api_v1_hotels_post
+      security:
+      - HTTPBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HotelIn'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HotelOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/hotels/{obj_id}:
+    patch:
+      tags:
+      - hotels
+      summary: ' Update'
+      operationId: _update_api_v1_hotels__obj_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: obj_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Obj Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HotelIn'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HotelOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - hotels
+      summary: ' Delete'
+      operationId: _delete_api_v1_hotels__obj_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: obj_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Obj Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/activities:
+    get:
+      tags:
+      - activities
+      summary: ' List'
+      operationId: _list_api_v1_activities_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: city
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: City
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Page Size
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActivityOut'
+                title: Response  List Api V1 Activities Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - activities
+      summary: ' Create'
+      operationId: _create_api_v1_activities_post
+      security:
+      - HTTPBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityIn'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/activities/{obj_id}:
+    patch:
+      tags:
+      - activities
+      summary: ' Update'
+      operationId: _update_api_v1_activities__obj_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: obj_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Obj Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityIn'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - activities
+      summary: ' Delete'
+      operationId: _delete_api_v1_activities__obj_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: obj_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Obj Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/transportation:
+    get:
+      tags:
+      - transportation
+      summary: ' List'
+      operationId: _list_api_v1_transportation_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: city
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: City
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Page Size
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransportationOut'
+                title: Response  List Api V1 Transportation Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - transportation
+      summary: ' Create'
+      operationId: _create_api_v1_transportation_post
+      security:
+      - HTTPBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransportationIn'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransportationOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/transportation/{obj_id}:
+    patch:
+      tags:
+      - transportation
+      summary: ' Update'
+      operationId: _update_api_v1_transportation__obj_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: obj_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Obj Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransportationIn'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransportationOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - transportation
+      summary: ' Delete'
+      operationId: _delete_api_v1_transportation__obj_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: obj_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Obj Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/me:
+    get:
+      tags:
+      - users
+      summary: Me
+      operationId: me_api_v1_me_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileOut'
+      security:
+      - HTTPBearer: []
+    patch:
+      tags:
+      - users
+      summary: Update Me
+      operationId: update_me_api_v1_me_patch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /api/v1/users:
+    get:
+      tags:
+      - users
+      summary: List Users
+      operationId: list_users_api_v1_users_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: role
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/Role'
+          - type: 'null'
+          title: Role
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Page Size
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfileOut'
+                title: Response List Users Api V1 Users Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/users/{user_id}/role:
+    patch:
+      tags:
+      - users
+      summary: Set Role
+      operationId: set_role_api_v1_users__user_id__role_patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/notifications:
+    get:
+      tags:
+      - users
+      summary: My Notifications
+      operationId: my_notifications_api_v1_notifications_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: unread_only
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Unread Only
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationOut'
+                title: Response My Notifications Api V1 Notifications Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/notifications/{nid}/read:
+    post:
+      tags:
+      - users
+      summary: Mark Read
+      operationId: mark_read_api_v1_notifications__nid__read_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: nid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Nid
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/audit-logs:
+    get:
+      tags:
+      - users
+      summary: Audit Logs
+      operationId: audit_logs_api_v1_audit_logs_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: resource_type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Resource Type
+      - name: action
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Action
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          minimum: 1
+          default: 100
+          title: Page Size
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditOut'
+                title: Response Audit Logs Api V1 Audit Logs Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/trips/{trip_id}/reviews:
+    post:
+      tags:
+      - users
+      summary: Create Review
+      operationId: create_review_api_v1_trips__trip_id__reviews_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewIn'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - users
+      summary: List Reviews
+      operationId: list_reviews_api_v1_trips__trip_id__reviews_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trip_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trip Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReviewOut'
+                title: Response List Reviews Api V1 Trips  Trip Id  Reviews Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/operator/summary:
+    get:
+      tags:
+      - users
+      summary: Operator Summary
+      operationId: operator_summary_api_v1_operator_summary_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    ActivityIn:
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          minLength: 2
+          title: Name
+        city:
+          type: string
+          maxLength: 120
+          minLength: 2
+          title: City
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        duration_minutes:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Duration Minutes
+        price:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Price
+        currency:
+          type: string
+          title: Currency
+          default: INR
+        vendor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Vendor Id
+      type: object
+      required:
+      - name
+      - city
+      title: ActivityIn
+    ActivityOut:
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          minLength: 2
+          title: Name
+        city:
+          type: string
+          maxLength: 120
+          minLength: 2
+          title: City
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+        duration_minutes:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Duration Minutes
+        price:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Price
+        currency:
+          type: string
+          title: Currency
+          default: INR
+        vendor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Vendor Id
+        id:
+          type: string
+          format: uuid
+          title: Id
+        is_active:
+          type: boolean
+          title: Is Active
+      type: object
+      required:
+      - name
+      - city
+      - id
+      - is_active
+      title: ActivityOut
+    AuditOut:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        actor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Actor Id
+        action:
+          type: string
+          title: Action
+        resource_type:
+          type: string
+          title: Resource Type
+        resource_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Resource Id
+        old_state:
+          type: object
+          title: Old State
+        new_state:
+          type: object
+          title: New State
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - action
+      - resource_type
+      - old_state
+      - new_state
+      - created_at
+      title: AuditOut
+    BookingCreate:
+      properties:
+        service_type:
+          type: string
+          maxLength: 60
+          minLength: 2
+          title: Service Type
+        service_name:
+          type: string
+          maxLength: 250
+          minLength: 2
+          title: Service Name
+        vendor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Vendor Id
+        amount:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Amount
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          default: INR
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
+      type: object
+      required:
+      - service_type
+      - service_name
+      title: BookingCreate
+    BookingOut:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        trip_id:
+          type: string
+          format: uuid
+          title: Trip Id
+        traveler_id:
+          type: string
+          format: uuid
+          title: Traveler Id
+        vendor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Vendor Id
+        service_type:
+          type: string
+          title: Service Type
+        service_name:
+          type: string
+          title: Service Name
+        reference_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reference Code
+        status:
+          $ref: '#/components/schemas/BookingStatus'
+        amount:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Amount
+        currency:
+          type: string
+          title: Currency
+        booked_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Booked At
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
+      type: object
+      required:
+      - id
+      - trip_id
+      - traveler_id
+      - service_type
+      - service_name
+      - status
+      - currency
+      title: BookingOut
+    BookingStatus:
+      type: string
+      enum:
+      - PLANNED
+      - PENDING
+      - CONFIRMED
+      - CANCELLED
+      - REBOOKED
+      - COMPLETED
+      title: BookingStatus
+    BookingUpdate:
+      properties:
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/BookingStatus'
+          - type: 'null'
+        amount:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Amount
+        reference_code:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Reference Code
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
+      type: object
+      title: BookingUpdate
+    DependencyCreate:
+      properties:
+        source_item_id:
+          type: string
+          format: uuid
+          title: Source Item Id
+        target_item_id:
+          type: string
+          format: uuid
+          title: Target Item Id
+        dependency_type:
+          type: string
+          pattern: ^(SEQUENTIAL|SPATIAL)$
+          title: Dependency Type
+          default: SEQUENTIAL
+        minimum_required_buffer_minutes:
+          type: integer
+          maximum: 1440.0
+          minimum: 0.0
+          title: Minimum Required Buffer Minutes
+          default: 30
+      type: object
+      required:
+      - source_item_id
+      - target_item_id
+      title: DependencyCreate
+    DependencyOut:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        trip_id:
+          type: string
+          format: uuid
+          title: Trip Id
+        source_item_id:
+          type: string
+          format: uuid
+          title: Source Item Id
+        target_item_id:
+          type: string
+          format: uuid
+          title: Target Item Id
+        dependency_type:
+          type: string
+          title: Dependency Type
+        minimum_required_buffer_minutes:
+          type: integer
+          title: Minimum Required Buffer Minutes
+      type: object
+      required:
+      - id
+      - trip_id
+      - source_item_id
+      - target_item_id
+      - dependency_type
+      - minimum_required_buffer_minutes
+      title: DependencyOut
+    DestinationOut:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        country:
+          type: string
+          title: Country
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        image_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Image Url
+        tags:
+          items:
+            type: string
+          type: array
+          title: Tags
+          default: []
+        avg_daily_cost:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Avg Daily Cost
+        currency:
+          type: string
+          title: Currency
+      type: object
+      required:
+      - id
+      - name
+      - country
+      - currency
+      title: DestinationOut
+    DisruptionCreate:
+      properties:
+        type:
+          $ref: '#/components/schemas/DisruptionType'
+        source_item_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Item Id
+        new_start_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: New Start Time
+        delay_minutes:
+          type: integer
+          maximum: 10080.0
+          minimum: 0.0
+          title: Delay Minutes
+          default: 0
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason
+      type: object
+      required:
+      - type
+      title: DisruptionCreate
+    DisruptionOut:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        trip_id:
+          type: string
+          format: uuid
+          title: Trip Id
+        type:
+          $ref: '#/components/schemas/DisruptionType'
+        source_item_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Item Id
+        original_start_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Original Start Time
+        new_start_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: New Start Time
+        delay_minutes:
+          type: integer
+          title: Delay Minutes
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason
+        status:
+          $ref: '#/components/schemas/DisruptionStatus'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - trip_id
+      - type
+      - delay_minutes
+      - status
+      - created_at
+      title: DisruptionOut
+    DisruptionStatus:
+      type: string
+      enum:
+      - OPEN
+      - ANALYZED
+      - RECOVERY_PROPOSED
+      - RESOLVED
+      - CLOSED
+      title: DisruptionStatus
+    DisruptionType:
+      type: string
+      enum:
+      - FLIGHT_DELAY
+      - FLIGHT_CANCELLATION
+      - TRAIN_DELAY
+      - HOTEL_UNAVAILABLE
+      - ACTIVITY_CANCELLED
+      - TRANSFER_UNAVAILABLE
+      title: DisruptionType
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    HotelIn:
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          minLength: 2
+          title: Name
+        city:
+          type: string
+          maxLength: 120
+          minLength: 2
+          title: City
+        country:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country
+        stars:
+          anyOf:
+          - type: integer
+            maximum: 7.0
+            minimum: 1.0
+          - type: 'null'
+          title: Stars
+        price_per_night:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Price Per Night
+        currency:
+          type: string
+          title: Currency
+          default: INR
+        amenities:
+          items:
+            type: string
+          type: array
+          title: Amenities
+        vendor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Vendor Id
+      type: object
+      required:
+      - name
+      - city
+      title: HotelIn
+    HotelOut:
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          minLength: 2
+          title: Name
+        city:
+          type: string
+          maxLength: 120
+          minLength: 2
+          title: City
+        country:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country
+        stars:
+          anyOf:
+          - type: integer
+            maximum: 7.0
+            minimum: 1.0
+          - type: 'null'
+          title: Stars
+        price_per_night:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Price Per Night
+        currency:
+          type: string
+          title: Currency
+          default: INR
+        amenities:
+          items:
+            type: string
+          type: array
+          title: Amenities
+        vendor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Vendor Id
+        id:
+          type: string
+          format: uuid
+          title: Id
+        is_active:
+          type: boolean
+          title: Is Active
+      type: object
+      required:
+      - name
+      - city
+      - id
+      - is_active
+      title: HotelOut
+    ImpactOut:
+      properties:
+        evaluation_id:
+          type: string
+          format: uuid
+          title: Evaluation Id
+        feasible:
+          type: boolean
+          title: Feasible
+        affected_items:
+          additionalProperties:
+            type: string
+          type: object
+          title: Affected Items
+        broken_items:
+          items:
+            type: string
+          type: array
+          title: Broken Items
+        at_risk_items:
+          items:
+            type: string
+          type: array
+          title: At Risk Items
+        violations:
+          items:
+            type: object
+          type: array
+          title: Violations
+        warnings:
+          items:
+            type: object
+          type: array
+          title: Warnings
+        explanation:
+          type: string
+          title: Explanation
+      type: object
+      required:
+      - evaluation_id
+      - feasible
+      - affected_items
+      - broken_items
+      - at_risk_items
+      - violations
+      - warnings
+      - explanation
+      title: ImpactOut
+    ItemStatus:
+      type: string
+      enum:
+      - PLANNED
+      - CONFIRMED
+      - AT_RISK
+      - BROKEN
+      - CANCELLED
+      - COMPLETED
+      - REBOOKED
+      title: ItemStatus
+    ItemType:
+      type: string
+      enum:
+      - FLIGHT
+      - TRAIN
+      - BUS
+      - TRANSFER
+      - HOTEL
+      - ACTIVITY
+      - EVENT
+      - RESTAURANT
+      - OTHER
+      title: ItemType
+    ItineraryItemCreate:
+      properties:
+        type:
+          $ref: '#/components/schemas/ItemType'
+        title:
+          type: string
+          maxLength: 250
+          minLength: 2
+          title: Title
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        location:
+          anyOf:
+          - type: string
+            maxLength: 250
+          - type: 'null'
+          title: Location
+        start_time:
+          type: string
+          format: date-time
+          title: Start Time
+        end_time:
+          type: string
+          format: date-time
+          title: End Time
+        duration_minutes:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Duration Minutes
+        cost:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Cost
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          default: INR
+        is_fixed:
+          type: boolean
+          title: Is Fixed
+          default: false
+        vendor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Vendor Id
+        sequence_order:
+          type: integer
+          title: Sequence Order
+          default: 0
+      type: object
+      required:
+      - type
+      - title
+      - start_time
+      - end_time
+      title: ItineraryItemCreate
+    ItineraryItemOut:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        trip_id:
+          type: string
+          format: uuid
+          title: Trip Id
+        type:
+          $ref: '#/components/schemas/ItemType'
+        title:
+          type: string
+          title: Title
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        location:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Location
+        start_time:
+          type: string
+          format: date-time
+          title: Start Time
+        end_time:
+          type: string
+          format: date-time
+          title: End Time
+        duration_minutes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Duration Minutes
+        cost:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Cost
+        currency:
+          type: string
+          title: Currency
+        status:
+          $ref: '#/components/schemas/ItemStatus'
+        booked_status:
+          $ref: '#/components/schemas/BookingStatus'
+        is_fixed:
+          type: boolean
+          title: Is Fixed
+        vendor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Vendor Id
+        booking_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Booking Id
+        sequence_order:
+          type: integer
+          title: Sequence Order
+      type: object
+      required:
+      - id
+      - trip_id
+      - type
+      - title
+      - start_time
+      - end_time
+      - currency
+      - status
+      - booked_status
+      - is_fixed
+      - sequence_order
+      title: ItineraryItemOut
+    ItineraryItemUpdate:
+      properties:
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/ItemType'
+          - type: 'null'
+        title:
+          anyOf:
+          - type: string
+            maxLength: 250
+            minLength: 2
+          - type: 'null'
+          title: Title
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        location:
+          anyOf:
+          - type: string
+            maxLength: 250
+          - type: 'null'
+          title: Location
+        start_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Start Time
+        end_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: End Time
+        duration_minutes:
+          anyOf:
+          - type: integer
+            minimum: 0.0
+          - type: 'null'
+          title: Duration Minutes
+        cost:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Cost
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/ItemStatus'
+          - type: 'null'
+        is_fixed:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Fixed
+        vendor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Vendor Id
+        sequence_order:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Sequence Order
+      type: object
+      title: ItineraryItemUpdate
+    NotificationOut:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        title:
+          type: string
+          title: Title
+        body:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Body
+        kind:
+          type: string
+          title: Kind
+        read:
+          type: boolean
+          title: Read
+        trip_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Trip Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - title
+      - kind
+      - read
+      - created_at
+      title: NotificationOut
+    PricingOut:
+      properties:
+        trip_id:
+          type: string
+          format: uuid
+          title: Trip Id
+        currency:
+          type: string
+          title: Currency
+        transportation:
+          type: number
+          title: Transportation
+        accommodation:
+          type: number
+          title: Accommodation
+        activities:
+          type: number
+          title: Activities
+        other:
+          type: number
+          title: Other
+        base_cost:
+          type: number
+          title: Base Cost
+        additional_cost:
+          type: number
+          title: Additional Cost
+        discount:
+          type: number
+          title: Discount
+        estimated_total:
+          type: number
+          title: Estimated Total
+        budget:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Budget
+        within_budget:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Within Budget
+      type: object
+      required:
+      - trip_id
+      - currency
+      - transportation
+      - accommodation
+      - activities
+      - other
+      - base_cost
+      - additional_cost
+      - discount
+      - estimated_total
+      title: PricingOut
+    ProfileOut:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        email:
+          type: string
+          title: Email
+        full_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Full Name
+        role:
+          $ref: '#/components/schemas/Role'
+        phone:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Phone
+      type: object
+      required:
+      - id
+      - email
+      - role
+      title: ProfileOut
+    ProfileUpdate:
+      properties:
+        full_name:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Full Name
+        phone:
+          anyOf:
+          - type: string
+            maxLength: 40
+          - type: 'null'
+          title: Phone
+      type: object
+      title: ProfileUpdate
+    RecommendationOut:
+      properties:
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        category:
+          type: string
+          title: Category
+          default: ''
+        estimated_cost:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Estimated Cost
+        score:
+          type: number
+          title: Score
+          default: 0.0
+      type: object
+      required:
+      - title
+      - description
+      title: RecommendationOut
+    RecoveryAction:
+      type: string
+      enum:
+      - RESCHEDULE_ITEM
+      - CHANGE_TRANSFER
+      - MOVE_RESTAURANT
+      - REPLACE_ACTIVITY
+      - CANCEL_OPTIONAL_ACTIVITY
+      - REPLACE_TRANSPORT
+      - MODIFY_TIMING
+      title: RecoveryAction
+    RecoveryOptionOut:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        trip_id:
+          type: string
+          format: uuid
+          title: Trip Id
+        disruption_id:
+          type: string
+          format: uuid
+          title: Disruption Id
+        action:
+          $ref: '#/components/schemas/RecoveryAction'
+        title:
+          type: string
+          title: Title
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        estimated_cost_delta:
+          type: number
+          title: Estimated Cost Delta
+        experience_impact:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Experience Impact
+        feasibility:
+          type: boolean
+          title: Feasibility
+        ai_rank:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ai Rank
+        ai_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ai Reason
+        affected_items:
+          items:
+            type: string
+          type: array
+          title: Affected Items
+        changes:
+          type: object
+          title: Changes
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason
+        selected:
+          type: boolean
+          title: Selected
+      type: object
+      required:
+      - id
+      - trip_id
+      - disruption_id
+      - action
+      - title
+      - estimated_cost_delta
+      - feasibility
+      - affected_items
+      - changes
+      - selected
+      title: RecoveryOptionOut
+    ReviewIn:
+      properties:
+        rating:
+          type: integer
+          maximum: 5.0
+          minimum: 1.0
+          title: Rating
+        comment:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Comment
+      type: object
+      required:
+      - rating
+      title: ReviewIn
+    ReviewOut:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        trip_id:
+          type: string
+          format: uuid
+          title: Trip Id
+        traveler_id:
+          type: string
+          format: uuid
+          title: Traveler Id
+        rating:
+          type: integer
+          title: Rating
+        comment:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Comment
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - trip_id
+      - traveler_id
+      - rating
+      - created_at
+      title: ReviewOut
+    Role:
+      type: string
+      enum:
+      - TRAVELER
+      - OPERATOR
+      - COORDINATOR
+      - VENDOR
+      - ADMIN
+      title: Role
+    RoleUpdate:
+      properties:
+        role:
+          $ref: '#/components/schemas/Role'
+      type: object
+      required:
+      - role
+      title: RoleUpdate
+    TransportationIn:
+      properties:
+        mode:
+          type: string
+          maxLength: 40
+          title: Mode
+        name:
+          type: string
+          maxLength: 200
+          minLength: 2
+          title: Name
+        origin:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Origin
+        destination:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Destination
+        price:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Price
+        currency:
+          type: string
+          title: Currency
+          default: INR
+        vendor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Vendor Id
+      type: object
+      required:
+      - mode
+      - name
+      title: TransportationIn
+    TransportationOut:
+      properties:
+        mode:
+          type: string
+          maxLength: 40
+          title: Mode
+        name:
+          type: string
+          maxLength: 200
+          minLength: 2
+          title: Name
+        origin:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Origin
+        destination:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Destination
+        price:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Price
+        currency:
+          type: string
+          title: Currency
+          default: INR
+        vendor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Vendor Id
+        id:
+          type: string
+          format: uuid
+          title: Id
+        is_active:
+          type: boolean
+          title: Is Active
+      type: object
+      required:
+      - mode
+      - name
+      - id
+      - is_active
+      title: TransportationOut
+    TripCreate:
+      properties:
+        title:
+          type: string
+          maxLength: 200
+          minLength: 2
+          title: Title
+        destination:
+          type: string
+          maxLength: 200
+          minLength: 2
+          title: Destination
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        budget:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Budget
+        currency:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Currency
+          default: INR
+        travel_style:
+          anyOf:
+          - type: string
+            maxLength: 60
+          - type: 'null'
+          title: Travel Style
+      type: object
+      required:
+      - title
+      - destination
+      - start_date
+      - end_date
+      title: TripCreate
+    TripOut:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        traveler_id:
+          type: string
+          format: uuid
+          title: Traveler Id
+        operator_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Operator Id
+        coordinator_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Coordinator Id
+        title:
+          type: string
+          title: Title
+        destination:
+          type: string
+          title: Destination
+        start_date:
+          type: string
+          format: date
+          title: Start Date
+        end_date:
+          type: string
+          format: date
+          title: End Date
+        duration_days:
+          type: integer
+          title: Duration Days
+        budget:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Budget
+        currency:
+          type: string
+          title: Currency
+        status:
+          $ref: '#/components/schemas/TripStatus'
+        travel_style:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Travel Style
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - traveler_id
+      - title
+      - destination
+      - start_date
+      - end_date
+      - duration_days
+      - currency
+      - status
+      - created_at
+      - updated_at
+      title: TripOut
+    TripPreferenceIn:
+      properties:
+        budget:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Budget
+        accommodation_preference:
+          anyOf:
+          - type: string
+            maxLength: 60
+          - type: 'null'
+          title: Accommodation Preference
+        transportation_preference:
+          anyOf:
+          - type: string
+            maxLength: 60
+          - type: 'null'
+          title: Transportation Preference
+        interests:
+          items:
+            type: string
+          type: array
+          title: Interests
+        activity_preferences:
+          items:
+            type: string
+          type: array
+          title: Activity Preferences
+        pace:
+          anyOf:
+          - type: string
+            maxLength: 30
+          - type: 'null'
+          title: Pace
+        travel_style:
+          anyOf:
+          - type: string
+            maxLength: 60
+          - type: 'null'
+          title: Travel Style
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
+      type: object
+      title: TripPreferenceIn
+    TripPreferenceOut:
+      properties:
+        budget:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Budget
+        accommodation_preference:
+          anyOf:
+          - type: string
+            maxLength: 60
+          - type: 'null'
+          title: Accommodation Preference
+        transportation_preference:
+          anyOf:
+          - type: string
+            maxLength: 60
+          - type: 'null'
+          title: Transportation Preference
+        interests:
+          items:
+            type: string
+          type: array
+          title: Interests
+        activity_preferences:
+          items:
+            type: string
+          type: array
+          title: Activity Preferences
+        pace:
+          anyOf:
+          - type: string
+            maxLength: 30
+          - type: 'null'
+          title: Pace
+        travel_style:
+          anyOf:
+          - type: string
+            maxLength: 60
+          - type: 'null'
+          title: Travel Style
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
+        id:
+          type: string
+          format: uuid
+          title: Id
+        trip_id:
+          type: string
+          format: uuid
+          title: Trip Id
+      type: object
+      required:
+      - id
+      - trip_id
+      title: TripPreferenceOut
+    TripQuestionIn:
+      properties:
+        question:
+          type: string
+          maxLength: 1000
+          minLength: 3
+          title: Question
+      type: object
+      required:
+      - question
+      title: TripQuestionIn
+    TripStatus:
+      type: string
+      enum:
+      - DRAFT
+      - PLANNING
+      - READY
+      - BOOKED
+      - IN_PROGRESS
+      - DISRUPTED
+      - COMPLETED
+      - CANCELLED
+      title: TripStatus
+    TripUpdate:
+      properties:
+        title:
+          anyOf:
+          - type: string
+            maxLength: 200
+            minLength: 2
+          - type: 'null'
+          title: Title
+        destination:
+          anyOf:
+          - type: string
+            maxLength: 200
+            minLength: 2
+          - type: 'null'
+          title: Destination
+        start_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Start Date
+        end_date:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: End Date
+        budget:
+          anyOf:
+          - type: number
+            minimum: 0.0
+          - type: 'null'
+          title: Budget
+        travel_style:
+          anyOf:
+          - type: string
+            maxLength: 60
+          - type: 'null'
+          title: Travel Style
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/TripStatus'
+          - type: 'null'
+        coordinator_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Coordinator Id
+      type: object
+      title: TripUpdate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    VendorIn:
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          minLength: 2
+          title: Name
+        service_type:
+          type: string
+          maxLength: 60
+          title: Service Type
+        contact_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contact Email
+        contact_phone:
+          anyOf:
+          - type: string
+            maxLength: 40
+          - type: 'null'
+          title: Contact Phone
+        city:
+          anyOf:
+          - type: string
+            maxLength: 120
+          - type: 'null'
+          title: City
+        profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Profile Id
+      type: object
+      required:
+      - name
+      - service_type
+      title: VendorIn
+    VendorOut:
+      properties:
+        name:
+          type: string
+          maxLength: 200
+          minLength: 2
+          title: Name
+        service_type:
+          type: string
+          maxLength: 60
+          title: Service Type
+        contact_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contact Email
+        contact_phone:
+          anyOf:
+          - type: string
+            maxLength: 40
+          - type: 'null'
+          title: Contact Phone
+        city:
+          anyOf:
+          - type: string
+            maxLength: 120
+          - type: 'null'
+          title: City
+        profile_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Profile Id
+        id:
+          type: string
+          format: uuid
+          title: Id
+        is_active:
+          type: boolean
+          title: Is Active
+        rating:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Rating
+      type: object
+      required:
+      - name
+      - service_type
+      - id
+      - is_active
+      title: VendorOut
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer
