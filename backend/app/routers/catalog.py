@@ -59,6 +59,16 @@ def update_vendor(vendor_id: UUID, data: VendorIn,
     return VendorOut.model_validate(v)
 
 
+@router.delete("/vendors/{vendor_id}", status_code=status.HTTP_204_NO_CONTENT,
+                dependencies=[Depends(_staff)])
+def delete_vendor(vendor_id: UUID, db: Session = Depends(get_db)):
+    v = db.get(Vendor, vendor_id)
+    if not v:
+        raise HTTPException(404, "Vendor not found")
+    v.is_active = False  # soft delete
+    db.commit()
+
+
 # ---------- Hotels / Activities / Transportation (CRUD by staff; read by all authed) ----------
 def _crud(prefix: str, model, in_schema, out_schema, tag: str):
     r = APIRouter(prefix=f"/api/v1/{prefix}", tags=[tag])

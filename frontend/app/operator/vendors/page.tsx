@@ -48,8 +48,7 @@ export default function VendorsPage() {
       endpoint="/api/v1/vendors"
       fields={fields}
       columns={columns}
-      supportsDelete={false}
-      deleteNote="Deactivation is not exposed by the current API contract for vendors (no DELETE /api/v1/vendors/{id}). Edit details instead; vendors can be hidden via the backend."
+      supportsDelete={true}
     />
   );
 }

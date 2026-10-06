@@ -1,9 +1,8 @@
 openapi: 3.1.0
 info:
   title: TourFlow AI
-  description: 'TourFlow AI API contract — generated from the FastAPI implementation
-    (source of truth: backend/app). Regenerate: python -c "from app.main import app;
-    ..."'
+  description: Personalized Dynamic Tour Planning & Tour Operations Platform (PS ID
+    7)
   version: 1.0.0
 paths:
   /health:
@@ -1011,6 +1010,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VendorOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - catalog
+      summary: Delete Vendor
+      operationId: delete_vendor_api_v1_vendors__vendor_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: vendor_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Vendor Id
+      responses:
+        '204':
+          description: Successful Response
         '422':
           description: Validation Error
           content:

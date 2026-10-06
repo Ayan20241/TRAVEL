@@ -132,6 +132,23 @@ def test_operator_can_list_trips():
     _auth(TRAVELER_A)
 
 
+def test_vendor_soft_delete_staff_only():
+    _auth(OPERATOR)
+    with TestClient(app, raise_server_exceptions=False) as c:
+        v = c.post("/api/v1/vendors", json={"name": "Temp Vendor", "service_type": "hotel"})
+        assert v.status_code == 201, v.text
+        vid = v.json()["id"]
+        r = c.delete(f"/api/v1/vendors/{vid}")
+        assert r.status_code == 204
+        # soft-deleted: still present but inactive
+        got = c.get("/api/v1/vendors")
+        assert all(x["id"] != vid or x["is_active"] is False for x in got.json())
+    _auth(TRAVELER_A)
+    with TestClient(app, raise_server_exceptions=False) as c2:
+        v = c2.post("/api/v1/vendors", json={"name": "X", "service_type": "hotel"})
+        assert v.status_code == 403  # travelers can't create vendors either
+
+
 # ---------------- E2E demo flow ----------------
 def test_e2e_trip_disruption_recovery(client):
     trip = _create_trip(client)
