@@ -1,0 +1,28 @@
+# Render deployment for the TourFlow AI backend.
+# The frontend deploys to Vercel (see vercel.json); Supabase hosts DB + auth.
+services:
+  - type: web
+    name: tourflow-api
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: BACKEND_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: SUPABASE_URL
+        sync: false            # set in Render dashboard
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false            # Supabase pooler URL
+      - key: CORS_ORIGINS
+        sync: false            # https://<your-vercel-domain>
+      - key: AI_PROVIDER
+        value: none
+      - key: AI_API_KEY
+        sync: false
