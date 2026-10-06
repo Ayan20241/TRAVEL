@@ -70,7 +70,7 @@ def decode_supabase_jwt(token: str) -> dict:
         key = next((k for k in jwks.get("keys", []) if k.get("kid") == header.get("kid")), None)
         if key is None:
             raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid token key")
-        public_key = jwt.algorithms.RSAAlgorithm.from_jwk(key)
+        public_key = jwt.PyJWK.from_dict(key).key  # handles RSA (kty=RSA) and EC (kty=EC) keys
         return jwt.decode(
             token, public_key, algorithms=["RS256", "ES256"],
             audience="authenticated",

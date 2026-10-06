@@ -242,3 +242,35 @@ def test_e2e_trip_disruption_recovery(client):
         assert "RECOVERY_GENERATED" in actions
         assert "RECOVERY_SELECTED" in actions
     _auth(TRAVELER_A)
+
+
+# --- EC (ES256) JWKS key handling: live Supabase advertises kty=EC ---
+def test_decode_jwt_with_ec_jwks_key(monkeypatch):
+    """decode_supabase_jwt must accept ES256 tokens when JWKS carries an EC key."""
+    import jwt as pyjwt
+    from cryptography.hazmat.primitives.asymmetric import ec
+    from cryptography.hazmat.primitives import serialization
+    from app import auth as auth_mod
+
+    priv = ec.generate_private_key(ec.SECP256R1())
+    pub = priv.public_key()
+    numbers = pub.public_numbers()
+    x = numbers.x.to_bytes(32, "big")
+    y = numbers.y.to_bytes(32, "big")
+    import base64
+    b64u = lambda b: base64.urlsafe_b64encode(b).rstrip(b"=").decode()
+    jwk = {"kty": "EC", "crv": "P-256", "x": b64u(x), "y": b64u(y),
+           "kid": "test-ec-key", "alg": "ES256", "use": "sig"}
+
+    now = datetime.now(timezone.utc)
+    token = pyjwt.encode(
+        {"sub": str(TRAVELER_A), "aud": "authenticated",
+         "exp": now + timedelta(minutes=5), "iat": now,
+         "email": "a@tourflow.ai"},
+        priv, algorithm="ES256", headers={"kid": "test-ec-key"})
+
+    monkeypatch.setattr(auth_mod, "_jwks", lambda: {"keys": [jwk]})
+    monkeypatch.setattr(auth_mod.get_settings(), "supabase_url",
+                        "https://example.supabase.co", raising=False)
+    claims = auth_mod.decode_supabase_jwt(token)
+    assert claims["sub"] == str(TRAVELER_A)
