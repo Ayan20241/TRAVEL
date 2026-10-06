@@ -1,6 +1,9 @@
 """Database engine/session. Supabase Postgres in prod, SQLite fallback for dev/tests."""
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.pool import NullPool
 
 from app.config import get_settings
 
@@ -10,7 +13,11 @@ connect_args = {}
 if settings.database_url.startswith("sqlite"):
     connect_args = {"check_same_thread": False}
 
-engine = create_engine(settings.database_url, connect_args=connect_args, pool_pre_ping=True)
+# Serverless (Vercel): no persistent connection pool across invocations.
+pool_kwargs = {"poolclass": NullPool} if os.environ.get("VERCEL") else {}
+
+engine = create_engine(settings.database_url, connect_args=connect_args,
+                       pool_pre_ping=True, **pool_kwargs)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
