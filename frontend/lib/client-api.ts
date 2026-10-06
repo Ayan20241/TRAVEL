@@ -54,6 +54,7 @@ export type RecoveryOption = {
 export type Booking = {
   id: string; trip_id: string; service_type: string; service_name: string;
   status: string; amount: number | null; currency: string; reference_code: string | null;
+  booked_at: string | null;
 };
 export type Destination = {
   id: string; name: string; country: string; description: string | null;
