@@ -41,3 +41,8 @@ backend/alembic/versions/__pycache__/
 # Logs
 *.log
 logs/
+
+# local dev artifacts
+*.db
+*.db-journal
+next-env.d.ts
